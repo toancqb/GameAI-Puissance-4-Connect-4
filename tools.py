@@ -38,3 +38,18 @@ def print_arena(ar):
 		print(cj + CT, end='')
 	#print('')
 	print_c(29, BT)
+
+def is_pos_blank(ar, x, y):
+	return (ar[x][y] == '   ')
+
+def idm(a, b, c, d):
+	if (a == '  ' or b == '  ' or c == '  ' or d == '  '):
+		return False
+	if (a == b and b == c and c == d):
+		return True
+	return False
+
+def check_range(n, a, z):
+	if (n >= a and n <= z):
+		return True
+	return False

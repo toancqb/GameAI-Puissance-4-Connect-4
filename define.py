@@ -10,4 +10,10 @@ CT = colored('|', 'cyan','on_white')
 BT = colored('=', 'cyan','on_white')
 PLAYER = [colored('-O-', 'red','on_yellow', attrs=['bold'])
 	, colored('-X-', 'red','on_blue', attrs=['bold'])]
-#NB_PLAYED = 0
+WARN_NUMBER = colored("0 -> 6 Only, Please!", 'red', 'on_white', attrs=['bold'])
+WARN_NUMBER_MENU = colored("1 -> 2 Only, Please!", 'red', 'on_white', attrs=['bold'])
+WARN_TYPE = colored("Integer Only, Please type again!", 'red', 'on_white', attrs=['bold'])
+WARN_ILLEGALMOVE = colored("Out of Range, Please try again!", 'red', 'on_white', attrs=['bold'])
+
+COLORDED_OPT = colored("\n                             \n1. 2 Players                 \n2. vs Computer(StupidAI)     \n                             \n"
+	, 'red', 'on_white', attrs=['bold'])

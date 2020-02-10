@@ -1,5 +1,7 @@
 from define import *
 from tools import *
+from AI_lib import *
+from random import randrange
 import sys 
 from termcolor import colored, cprint
 
@@ -18,21 +20,6 @@ def turn(ar, y, player):
 			turn_to_x_y(ar, i, y, player)
 			return (i, y)
 	return ()
-
-def is_pos_blank(ar, x, y):
-	return (ar[x][y] == '   ')
-
-def idm(a, b, c, d):
-	if (a == '  ' or b == '  ' or c == '  ' or d == '  '):
-		return False
-	if (a == b and b == c and c == d):
-		return True
-	return False
-
-def check_range(n, a, z):
-	if (n >= a and n <= z):
-		return True
-	return False
 
 def is_winning_pos(ar, x, y):
 	for i in range(-3, 1):
@@ -65,25 +52,86 @@ def game():
 		try:
 			y = int(input(s))
 			if (y < 0 or y > 6):
-				print("0 -> 6 Only, Please!")
+				print(WARN_NUMBER)
 				continue
 		except ValueError:
-			print("Integer Only, Please type again!")
+			print(WARN_TYPE)
 			continue
 		clear()
 		coord = turn(arena, y, PLAYER[t])
 		if (coord == ()):
 			print_arena(arena)
-			print("Out of Range, Please try again!")
+			print(WARN_ILLEGALMOVE)
 			continue
 		print_arena(arena)
 		if (is_winning_pos(arena, coord[0], coord[1])):
 			print("\nFelicitation!! [ PLAYER", t+1, PLAYER[t], "] WON!!\n")
 			break
-		t = 1 - t
-		NB_PLAYED = NB_PLAYED + 1
+		t ,NB_PLAYED = 1 - t, NB_PLAYED + 1
 		if (NB_PLAYED == TX*TY):
 			print("Hoa roi")
 			break
 
-game()
+def stupid_AI():
+	n = randrange(7)
+	return n
+
+#def minimax_AI(ar):
+#	mn = cp_arena(ar)
+
+
+def AI_Puissance4(AI_function):
+	t = 0
+	NB_PLAYED = 0
+	arena = init_arena(TX, TY)
+	print_arena(arena)
+	while (NB_PLAYED < TX*TY):
+		coord = ()
+		s = "Chon vi tri tu 0-6\n[ PLAYER "+str(t+1)+"] ("+PLAYER[t]+") : "
+		if (t == 0):
+			try:
+				y = int(input(s))
+				if (y < 0 or y > 6):
+					print(WARN_NUMBER)
+					continue
+			except ValueError:
+				print(WARN_TYPE)
+				continue
+		else:
+			y = AI_function()
+		clear()
+		coord = turn(arena, y, PLAYER[t])
+		if (coord == ()):
+			print_arena(arena)
+			print(WARN_ILLEGALMOVE)
+			continue
+		print_arena(arena)
+		if (is_winning_pos(arena, coord[0], coord[1])):
+			print("\nFelicitation!! [ PLAYER", t+1, PLAYER[t], "] WON!!\n")
+			break
+		t ,NB_PLAYED = 1 - t, NB_PLAYED + 1
+		if (NB_PLAYED == TX*TY):
+			print("Hoa roi")
+			break
+
+def menu():
+	print(COLORED_TITLE)
+	control = True
+	while control:
+		try:
+			n = (int)(input(COLORDED_OPT))
+			if (n < 1 or n > 2):
+				print(WARN_NUMBER_MENU)
+				continue
+			control = False
+		except ValueError:
+			print(WARN_TYPE)
+			continue
+
+	if (n == 1):
+		game()
+	elif (n == 2):
+		AI_Puissance4(stupid_AI)
+
+#game()
+menu()

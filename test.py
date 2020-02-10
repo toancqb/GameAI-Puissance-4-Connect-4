@@ -1,4 +1,5 @@
-lst = [1]
-lst = lst + [2]
+from random import randrange
 
-print(lst)
+for i in range(20):
+	c = randrange(7)
+	print(c)
