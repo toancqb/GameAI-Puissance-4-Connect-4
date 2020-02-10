@@ -3,6 +3,26 @@ import sys
 from termcolor import colored, cprint
 from define import *
 
+def init_arena(nx, ny):
+	ar = []
+	for i in range(nx):
+		ar.append(getlist(ny, '   '))
+	return ar
+
+def turn_to_x_y(ar, x, y, player):
+	ar[x][y] = player 
+
+def turn(ar, y, player):
+	for i in range(TX-1, -1, -1):
+		if is_pos_blank(ar, i, y) == True:
+			turn_to_x_y(ar, i, y, player)
+			return (i, y)
+	return ()
+
+def cp_int(n):
+	m = n
+	return m
+
 def clear():
    os.system('clear')
 

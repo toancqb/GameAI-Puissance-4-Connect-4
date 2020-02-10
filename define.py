@@ -15,5 +15,5 @@ WARN_NUMBER_MENU = colored("1 -> 2 Only, Please!", 'red', 'on_white', attrs=['bo
 WARN_TYPE = colored("Integer Only, Please type again!", 'red', 'on_white', attrs=['bold'])
 WARN_ILLEGALMOVE = colored("Out of Range, Please try again!", 'red', 'on_white', attrs=['bold'])
 
-COLORDED_OPT = colored("\n                             \n1. 2 Players                 \n2. vs Computer(StupidAI)     \n                             \n"
+COLORDED_OPT = colored("\n                             \n1. 2 Players                 \n2. vs Computer(StupidAI)     \n3. vs Computer(MinimaxAI)    \n                             \n"
 	, 'red', 'on_white', attrs=['bold'])
