@@ -74,14 +74,7 @@ def idm2(player, a, b, c, d):
 		score += 5
 	elif (piece == 2 and blank == 2):
 		score += 2
-	blank, piece = 0, 0
-	for i in lst:
-		if (i == '   '):
-			blank += 1
-		if (i == PLAYER[odd_player]):
-			piece += 1
-	if (piece == 3 and blank == 1):
-		score -= 50
+
 	blank, piece = 0, 0
 	for i in lst:
 		if (i == PLAYER[player]):
@@ -144,11 +137,21 @@ def score_ar(ar, player, sign):
 			py = coord[1]
 	return (sign * max_point, px, py)
 
-def AI_Normal_Mode():
-	t = 0
+def AI_Normal():
 	NB_PLAYED = 0
 	arena = init_arena(TX, TY)
-	print_arena(arena)
+	print_arena(arena)	
+	while True:
+		try:
+			y = int(input(CHOOSE_TURN))
+			if (y < 0 or y > 1):
+				print(WARN_NUMBER)
+				continue
+			break
+		except ValueError:
+			print(WARN_TYPE)
+			continue
+	t = 1 - y		
 	while (NB_PLAYED < TX*TY):
 		coord = ()
 		s = "Chon vi tri tu 0-6\n  [ PLAYER "+str(t+1)+"] ("+PLAYER[t]+") : "
@@ -182,17 +185,16 @@ def AI_Normal_Mode():
 			print(TIE)
 			break
 
-
-def max_eval(mn, result, cp_NB_PLAYED, alpha, beta, depth):
+def max_eval(mn, result, cp_NB_PLAYED, alpha, beta, depth, prev_coord):
 	if (depth == 0):
-		return (score_ar(mn, 1, 1))
+		return (score_pos(mn, prev_coord, 1), prev_coord[0], prev_coord[1])
 	px, py, coord, m, max_v = None, None, (), (), -100000000
 	if result == 1:
-		return (1000000, 0, 0)
+		return (1000000, prev_coord[0], prev_coord[1])
 	elif result == 0:
-		return (0, 0, 0)
+		return (0, prev_coord[0], prev_coord[1])
 	elif result == -1:
-		return (-1000000, 0, 0)
+		return (-1000000, prev_coord[0], prev_coord[1])
 	for y in range(TY):
 		new_mn = cp_arena(mn)
 		coord = turn(new_mn, y, PLAYER[1])
@@ -203,7 +205,7 @@ def max_eval(mn, result, cp_NB_PLAYED, alpha, beta, depth):
 			result = 1
 		elif cp_NB_PLAYED + 1 == TX*TY:
 			result = 0
-		m = min_eval(new_mn, result, cp_NB_PLAYED + 1, alpha, beta, depth-1)
+		m = min_eval(new_mn, result, cp_NB_PLAYED + 1, alpha, beta, depth-1, coord)
 		if (m[0] > max_v):
 			max_v, px, py = m[0], m[1], m[2]
 		if (alpha < max_v):
@@ -212,16 +214,17 @@ def max_eval(mn, result, cp_NB_PLAYED, alpha, beta, depth):
 			break
 	return (max_v, px, py)
 
-def min_eval(mn, result, cp_NB_PLAYED, alpha, beta, depth):
+def min_eval(mn, result, cp_NB_PLAYED, alpha, beta, depth, prev_coord):
 	if (depth == 0):
-		return score_ar(mn, 0, -1)
+		sign = -1
+		return (sign * score_pos(mn, prev_coord, 0), prev_coord[0], prev_coord[1])
 	px, py, coord, m, min_v = None, None, (), (), 100000000
 	if result == 1:
-		return (1000000, 0, 0)
+		return (1000000, prev_coord[0], prev_coord[1])
 	elif result == 0:
-		return (0, 0, 0)
+		return (0, prev_coord[0], prev_coord[1])
 	elif result == -1:
-		return (-1000000, 0, 0)
+		return (-1000000, prev_coord[0], prev_coord[1])
 	for y in range(TY):
 		new_mn = cp_arena(mn)
 		coord = turn(new_mn, y, PLAYER[0])
@@ -232,7 +235,7 @@ def min_eval(mn, result, cp_NB_PLAYED, alpha, beta, depth):
 			result = 1
 		elif cp_NB_PLAYED + 1 == TX*TY:
 			result = 0
-		m = max_eval(new_mn, result, cp_NB_PLAYED + 1, alpha, beta, depth-1)
+		m = max_eval(new_mn, result, cp_NB_PLAYED + 1, alpha, beta, depth-1, coord)
 		if (m[0] < min_v):
 			min_v, px, py = m[0], m[1], m[2]
 		if (beta > min_v):
@@ -244,7 +247,7 @@ def min_eval(mn, result, cp_NB_PLAYED, alpha, beta, depth):
 def minimax_AI(ar, NB_PLAYED, depth):
 	mn = cp_arena(ar)
 	cp_NB_PLAYED = cp_int(NB_PLAYED)
-	(m, max_i, max_j) = max_eval(mn, 2, cp_NB_PLAYED, -100000000, 100000000, depth)
+	(m, max_i, max_j) = max_eval(mn, 2, cp_NB_PLAYED, -100000000, 100000000, depth, ())
 	return (m, max_j)
 
 def AI_Minimax(depth):
@@ -290,6 +293,17 @@ def AI_Puissance4(AI_function):
 	NB_PLAYED = 0
 	arena = init_arena(TX, TY)
 	print_arena(arena)
+	while True:
+		try:
+			y = int(input(CHOOSE_TURN))
+			if (y < 0 or y > 1):
+				print(WARN_NUMBER)
+				continue
+			break
+		except ValueError:
+			print(WARN_TYPE)
+			continue
+	t = 1 - y
 	while (NB_PLAYED < TX*TY):
 		coord = ()
 		s = "Chon vi tri tu 0-6\n  [ PLAYER "+str(t+1)+"] ("+PLAYER[t]+") : "
@@ -339,9 +353,8 @@ def menu():
 	elif (n == 2):
 		AI_Puissance4(stupid_AI)
 	elif (n == 3):
-		AI_Normal_Mode()		
+		AI_Normal()		
 	elif (n == 4):
 		AI_Minimax(3)		
 
-#game()
 menu()

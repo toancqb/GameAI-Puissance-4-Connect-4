@@ -18,3 +18,4 @@ WARN_ILLEGALMOVE = colored("Out of Range, Please try again!", 'red', 'on_white',
 COLORDED_OPT = colored("\n                             \n1. 2 Players                 \n2. vs Computer(StupidAI)     \n3. vs Computer(NormalAI)     \n4. vs Computer(MinimaxAI)    \n                             \n"
 	, 'red', 'on_white', attrs=['bold'])
 TIE = colored("It's a tie", 'red', 'on_white', attrs=["bold"])
+CHOOSE_TURN = colored("\n Do you want to play first? \n Press 1 for YES \n Press 0 for NO\n", 'white', 'on_red', attrs=["bold"])
