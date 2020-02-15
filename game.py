@@ -126,7 +126,6 @@ def score_pos(ar, coord, p):
 			score += idm2(p, ar[x+i[0]][y+i[1]], ar[x+i[0]-1][y+i[1]+1]
 				, ar[x+i[0]-2][y+i[1]+2], ar[x+i[0]-3][y+i[1]+3])
 
-	print("Position ", y, score)
 	return score
 
 def score_ar(ar, player, sign):
@@ -187,90 +186,68 @@ def AI_Normal_Mode():
 def max_eval(mn, result, cp_NB_PLAYED, alpha, beta, depth):
 	if (depth == 0):
 		return (score_ar(mn, 1, 1))
-	max_v = -100000000
-	px = None
-	py = None
-	coord = ()
+	px, py, coord, m, max_v = None, None, (), (), -100000000
 	if result == 1:
-		return (1000, 0, 0)
+		return (1000000, 0, 0)
 	elif result == 0:
 		return (0, 0, 0)
 	elif result == -1:
-		return (-1000, 0, 0)
+		return (-1000000, 0, 0)
 	for y in range(TY):
 		new_mn = cp_arena(mn)
 		coord = turn(new_mn, y, PLAYER[1])
 		if coord == ():
 			continue
-		px = coord[0]
-		py = coord[1]
+		px, py = coord[0], coord[1]
 		if is_winning_pos(new_mn, coord[0], coord[1]):
 			result = 1
 		elif cp_NB_PLAYED + 1 == TX*TY:
 			result = 0
 		m = min_eval(new_mn, result, cp_NB_PLAYED + 1, alpha, beta, depth-1)
-		if (m == None):
-			turn_to_x_y(new_mn, coord[0], coord[1], '   ')
-			continue
 		if (m[0] > max_v):
-			max_v = m[0]
-			px = m[1]
-			py = m[2]
+			max_v, px, py = m[0], m[1], m[2]
 		if (alpha < max_v):
 			alpha = max_v
 		if (alpha >= beta):
 			break
-		turn_to_x_y(new_mn, coord[0], coord[1], '   ')
 	return (max_v, px, py)
 
 def min_eval(mn, result, cp_NB_PLAYED, alpha, beta, depth):
 	if (depth == 0):
 		return score_ar(mn, 0, -1)
-	min_v = 100000000
-	px = None
-	py = None
-	coord = ()
-	m = ()
+	px, py, coord, m, min_v = None, None, (), (), 100000000
 	if result == 1:
-		return (1000, 0, 0)
+		return (1000000, 0, 0)
 	elif result == 0:
 		return (0, 0, 0)
 	elif result == -1:
-		return (-1000, 0, 0)
+		return (-1000000, 0, 0)
 	for y in range(TY):
 		new_mn = cp_arena(mn)
 		coord = turn(new_mn, y, PLAYER[0])
 		if coord == ():
 			continue
-		px = coord[0]
-		py = coord[1]
+		px, py = coord[0], coord[1]
 		if is_winning_pos(new_mn, coord[0], coord[1]):
 			result = 1
 		elif cp_NB_PLAYED + 1 == TX*TY:
 			result = 0
 		m = max_eval(new_mn, result, cp_NB_PLAYED + 1, alpha, beta, depth-1)
-		if (m == None):
-			turn_to_x_y(new_mn, coord[0], coord[1], '   ')
-			continue
 		if (m[0] < min_v):
-			min_v = m[0]
-			px = m[1]
-			py = m[2]
+			min_v, px, py = m[0], m[1], m[2]
 		if (beta > min_v):
 			beta = min_v
 		if (alpha >= beta):
 			break
-		turn_to_x_y(new_mn, coord[0], coord[1], '   ')
 	return (min_v, px, py)
 
 def minimax_AI(ar, NB_PLAYED, depth):
 	mn = cp_arena(ar)
 	cp_NB_PLAYED = cp_int(NB_PLAYED)
-	(m, max_i, max_j) = max_eval(mn, 2, cp_NB_PLAYED, -100000000000, 100000000000, depth)
-	print(m, max_i, max_j)
-	return max_j
+	(m, max_i, max_j) = max_eval(mn, 2, cp_NB_PLAYED, -100000000, 100000000, depth)
+	return (m, max_j)
 
-def AI_minimax_Puissance4(depth):
+def AI_Minimax(depth):
 	t = 0
 	NB_PLAYED = 0
 	arena = init_arena(TX, TY)
@@ -289,13 +266,11 @@ def AI_minimax_Puissance4(depth):
 				print(WARN_TYPE)
 				continue
 		else:
-			y = None
-			#d = 5
-			#while y == None:
-			y = minimax_AI(arena, NB_PLAYED, depth)
-			#	d = d + 1
-			print(y)
-		clear()
+			m = minimax_AI(arena, NB_PLAYED, depth)
+			y = m[1]
+		#clear()
+		if (t == 1):
+			print(y, m[0])
 		coord = turn(arena, y, PLAYER[t])
 		if (coord == ()):
 			print_arena(arena)
@@ -366,7 +341,7 @@ def menu():
 	elif (n == 3):
 		AI_Normal_Mode()		
 	elif (n == 4):
-		AI_minimax_Puissance4(6)		
+		AI_Minimax(3)		
 
 #game()
 menu()
