@@ -332,6 +332,17 @@ def AI_Minimax(depth):
 	NB_PLAYED = 0
 	arena = init_arena(TX, TY)
 	print_arena(arena)
+	while True:
+		try:
+			y = int(input(CHOOSE_TURN))
+			if (y < 0 or y > 1):
+				print(WARN_NUMBER)
+				continue
+			break
+		except ValueError:
+			print(WARN_TYPE)
+			continue
+	t = 1 - y	
 	while (NB_PLAYED < TX*TY):
 		coord = ()
 		s = "Chon vi tri tu 0-6\n  [ PLAYER "+str(t+1)+"] ("+PLAYER[t]+") : "
@@ -348,11 +359,43 @@ def AI_Minimax(depth):
 		else:
 			#m = minimax_AI(arena, NB_PLAYED, depth)
 			#y = m[1]
-			m = minimax(arena, 1, NB_PLAYED, 4, 2, -10000000000000, 10000000000000)
+			m = minimax(arena, 1, NB_PLAYED, depth, 2, -10000000000000, 10000000000000)
 			y = m[1]
-		#clear()
+		clear()
 		if (t == 1):
 			print(y, m[0])
+		coord = turn(arena, y, PLAYER[t])
+		if (coord == ()):
+			print_arena(arena)
+			print(WARN_ILLEGALMOVE)
+			continue
+		print_arena(arena)
+		if (is_winning_pos(arena, coord[0], coord[1])):
+			print("\nFelicitation!! [ PLAYER", t+1, PLAYER[t], "] WON!!\n")
+			break
+		t ,NB_PLAYED = 1 - t, NB_PLAYED + 1
+		if (NB_PLAYED == TX*TY):
+			print(TIE)
+			break
+
+def AI_vs_AI(mode, depth1, depth2):
+	t = 0
+	NB_PLAYED = 0
+	arena = init_arena(TX, TY)
+	print_arena(arena)
+	while (NB_PLAYED < TX*TY):
+		if (t == 0):
+			if mode:
+				m = score_ar(arena, 0, 1)
+				y = m[2]
+			else:
+				m = minimax(arena, 0, NB_PLAYED, depth1, 2, -10000000000000, 10000000000000)
+				y = m[1]
+		else:
+			m = minimax(arena, 1, NB_PLAYED, depth2, 2, -10000000000000, 10000000000000)
+			y = m[1]
+		clear()
+		
 		coord = turn(arena, y, PLAYER[t])
 		if (coord == ()):
 			print_arena(arena)
@@ -467,7 +510,7 @@ def menu():
 	while control:
 		try:
 			n = (int)(input(COLORDED_OPT))
-			if (n < 1 or n > 4):
+			if (n < 1 or n > 5):
 				print(WARN_NUMBER_MENU)
 				continue
 			control = False
@@ -482,6 +525,9 @@ def menu():
 	elif (n == 3):
 		AI_Normal()		
 	elif (n == 4):
-		AI_Minimax(5)	
+		AI_Minimax(5)
+	elif (n == 5):
+		AI_vs_AI(True, 3, 7)
+
 
 menu()
