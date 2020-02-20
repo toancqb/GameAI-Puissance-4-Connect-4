@@ -4,7 +4,6 @@ import copy
 from termcolor import colored, cprint
 from define import *
 
-
 #def convert_list_to_tuple(ar):
 #	return tuple(ar)
 
@@ -30,7 +29,7 @@ def init_arena(nx, ny):
 	return ar
 
 def turn_to_x_y(ar, x, y, player):
-	ar[x][y] = player 
+	ar[x][y] = player
 
 def turn(ar, y, player):
 	for x in range(TX-1, -1, -1):
@@ -38,10 +37,6 @@ def turn(ar, y, player):
 			turn_to_x_y(ar, x, y, player)
 			return (x, y)
 	return ()
-
-def cp_int(n):
-	m = n
-	return m
 
 def clear():
    os.system('clear')
