@@ -1,20 +1,7 @@
 import os
-import sys
 import copy
 from termcolor import colored, cprint
 from define import *
-
-#def convert_list_to_tuple(ar):
-#	return tuple(ar)
-
-#def convert_tuple_to_list(ar):
-#	return list(ar)
-
-#def cp_arena(ar):
-#	ab = convert_tuple_to_list(ar)
-#	mn = ab.copy()
-#	mm = convert_list_to_tuple(mn)
-#	return mm
 
 def cp_arena(ar):
 	mn = copy.deepcopy(ar)
@@ -23,9 +10,7 @@ def cp_arena(ar):
 def init_arena(nx, ny):
 	ar = []
 	for i in range(nx):
-		ar.append(getlist(ny, '   '))
-#	arena_tuple = convert_list_to_tuple(ar)
-#	return arena_tuple
+		ar.append(getlist(ny, BLK))
 	return ar
 
 def turn_to_x_y(ar, x, y, player):
@@ -74,20 +59,10 @@ def print_arena(ar):
 	print_c(29, BT)
 
 def is_pos_blank(ar, x, y):
-	return (ar[x][y] == '   ')
-
-def lst_pos_y_playable(ar, player):
-	mn = cp_arena(ar)
-	lst_y = []
-	for y in range(TY):
-		new_mn = cp_arena(mn)
-		if turn(new_mn, y, player) != ():
-			lst_y.append(y)
-	return lst_y
-
+	return (ar[x][y] == BLK)
 
 def idm(a, b, c, d):
-	if (a == '   ' or b == '   ' or c == '   ' or d == '   '):
+	if (a == BLK or b == BLK or c == BLK or d == BLK):
 		return False
 	if (a == b and b == c and c == d):
 		return True

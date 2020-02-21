@@ -10,6 +10,7 @@ NEG_INF = -10000000000000
 
 CT = colored('|', 'cyan','on_white')
 BT = colored('=', 'cyan','on_white')
+BLK = '   '
 PLAYER = [colored('-O-', 'red','on_yellow', attrs=['bold'])
 	, colored('-X-', 'red','on_blue', attrs=['bold'])]
 WARN_NUMBER = colored("0 -> 6 Only, Please!", 'red', 'on_white', attrs=['bold'])

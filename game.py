@@ -1,5 +1,5 @@
 from define import *
-from tools import *
+from ft_lib import *
 from AI_lib import *
 from termcolor import colored, cprint
 
@@ -34,7 +34,7 @@ def Normal_Game():
 			print(TIE)
 			break
 
-def menu():
+def Menu():
 	print(COLORED_TITLE)
 	while True:
 		try:
@@ -46,15 +46,17 @@ def menu():
 		except ValueError:
 			print(WARN_TYPE)
 			continue
+	clear()
 	if (n == 1):
-		Normal_Game()
+		Normal_Game() 		 ## 2 Players
 	elif (n == 2):
-		AI_Mode(1)
+		AI_Mode(1) 			 ## StupidAI
 	elif (n == 3):
-		AI_Mode(2)
+		AI_Mode(2) 			 ## NormalAI
 	elif (n == 4):
-		AI_Mode(3, 5)
+		AI_Mode(3, 5) 		 ## MinimaxAI
 	elif (n == 5):
-		AI_vs_AI(True, 3, 7)
+		AI_vs_AI(True, 3, 7) ##True:  NormalAI vs MinimaxAI
+							 ##False: MinimaxAI vs NormalAI
 
-menu()
+Menu()
