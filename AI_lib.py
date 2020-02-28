@@ -7,7 +7,7 @@
 
 from define import *
 from ft_lib import *
-from random import randrange
+from random import randrange, shuffle
 
 def idm2(player, a, b, c, d):
 	odd_player = 0
@@ -136,10 +136,11 @@ def minimax(ar,player,org_player,NB_PLAYED,depth,result,calc_func,a,b):
 	if (depth == 0):
 		m = score_ar(ar, calc_func, player,org_player)
 		return (m[0], m[1])
-	coord = ()
+	coord, lst_y = (), lst_create_range(TY)
 	if player == org_player: # Maximal Player
 		max_v, py = NEG_INF, None
-		for y in range(TY):
+		shuffle(lst_y)
+		for y in lst_y:
 			cp_ar = cp_arena(ar)
 			coord = turn(cp_ar, y, PLAYER[player])
 			if coord == ():
@@ -159,7 +160,8 @@ def minimax(ar,player,org_player,NB_PLAYED,depth,result,calc_func,a,b):
 		return (max_v, py)
 	else: # Minimal Player
 		min_v, py = INF, None
-		for y in range(TY):
+		shuffle(lst_y)
+		for y in lst_y:
 			cp_ar = cp_arena(ar)
 			coord = turn(cp_ar, y, PLAYER[player])
 			if coord == ():

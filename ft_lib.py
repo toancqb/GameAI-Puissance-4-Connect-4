@@ -37,6 +37,12 @@ def print_c(n, c):
 	s = c * n
 	print('\n' + s)
 
+def lst_create_range(n):
+	lst_y = []
+	for i in range(n):
+		lst_y.append(i)
+	return lst_y
+
 def getlist(n, c):
 	lst = []
 	for i in range(n):
