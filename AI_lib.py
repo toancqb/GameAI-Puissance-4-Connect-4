@@ -77,6 +77,35 @@ def idm3(player, a, b, c, d):
 
 	return score
 
+def idm4(player, a, b, c, d):
+	odd_player = 0
+	if (player == 0):
+		odd_player = 1
+	score, blank, piece = 0, 0, 0
+	lst = [a,b,c,d]
+	for i in lst:
+		if (i == BLK):
+			blank += 1
+		if (i == PLAYER[player]):
+			piece += 1
+	if (piece == 4 and blank == 0):
+		score += 100000
+	if (piece == 3 and blank == 1):
+		score += 5
+	elif (piece == 2 and blank == 2):
+		score += 2
+
+	odd_piece, piece = 0, 0
+	for i in lst:
+		if (i == PLAYER[player]):
+			odd_piece += 1
+		if (i == PLAYER[odd_player]):
+			piece += 1
+	if (piece == 3 and odd_piece == 1):
+		score += 100000
+
+	return score
+
 def score_pos(ar, coord, calc_func, p):
 	x = coord[0]
 	y = coord[1]
@@ -136,15 +165,14 @@ def minimax(ar,player,org_player,NB_PLAYED,depth,result,calc_func,a,b):
 	if (depth == 0):
 		m = score_ar(ar, calc_func, player,org_player)
 		return (m[0], m[1])
-	coord, lst_y = (), lst_create_range(TY)
+	coord = ()
 	if player == org_player: # Maximal Player
-		max_v, py = NEG_INF, None
+		lst_y = lst_applicable(ar, TY, player)
 		shuffle(lst_y)
+		max_v, py = NEG_INF, None
 		for y in lst_y:
 			cp_ar = cp_arena(ar)
 			coord = turn(cp_ar, y, PLAYER[player])
-			if coord == ():
-				continue
 			if is_winning_pos(cp_ar, coord[0], coord[1]):
 				result = 1
 			elif NB_PLAYED == TX*TY:
@@ -159,13 +187,12 @@ def minimax(ar,player,org_player,NB_PLAYED,depth,result,calc_func,a,b):
 				break
 		return (max_v, py)
 	else: # Minimal Player
-		min_v, py = INF, None
+		lst_y = lst_applicable(ar, TY, player)
 		shuffle(lst_y)
+		min_v, py = INF, None
 		for y in lst_y:
 			cp_ar = cp_arena(ar)
 			coord = turn(cp_ar, y, PLAYER[player])
-			if coord == ():
-				continue
 			if is_winning_pos(cp_ar, coord[0], coord[1]):
 				result = -1
 			elif NB_PLAYED == TX*TY:
@@ -178,6 +205,8 @@ def minimax(ar,player,org_player,NB_PLAYED,depth,result,calc_func,a,b):
 				b = min_v
 			if a >= b:
 				break
+		if py == None:
+			py = lst_applicable(ar, TY, player)[0]
 		return (min_v, py)
 
 #######################################
@@ -217,7 +246,6 @@ def AI_Mode(mode=2, depth=3):
 				y = score_ar(arena,idm2,t,t)[1]
 			elif mode == 3:
 				y = minimax(arena,t,t,NB_PLAYED,depth,2,idm3,NEG_INF,INF)[1]
-
 		clear()
 		coord = turn(arena, y, PLAYER[t])
 		if (coord == ()):
@@ -233,7 +261,6 @@ def AI_Mode(mode=2, depth=3):
 			print(TIE)
 			break
 
-
 def AI_vs_AI(mode, depth1, depth2):
 	t, NB_PLAYED = 0, 0
 	arena = init_arena(TX, TY)
@@ -243,7 +270,7 @@ def AI_vs_AI(mode, depth1, depth2):
 			if mode:
 				y = score_ar(arena, idm2, t, t)[1]
 			else:
-				y = minimax(arena,t,t,NB_PLAYED,depth1,2,idm3,NEG_INF,INF)[1]
+				y = minimax(arena,t,t,NB_PLAYED,depth1,2,idm4,NEG_INF,INF)[1]
 		else:
 			y = minimax(arena,t,t,NB_PLAYED,depth2,2,idm3,NEG_INF,INF)[1]
 		clear()

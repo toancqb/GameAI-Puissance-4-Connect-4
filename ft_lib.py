@@ -37,9 +37,13 @@ def print_c(n, c):
 	s = c * n
 	print('\n' + s)
 
-def lst_create_range(n):
+def lst_applicable(ar, n, p):
 	lst_y = []
 	for i in range(n):
+		mn = cp_arena(ar)
+		coord = turn(mn, i, PLAYER[p])
+		if coord == ():
+			continue
 		lst_y.append(i)
 	return lst_y
 
