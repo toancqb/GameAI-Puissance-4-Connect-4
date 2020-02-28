@@ -42,11 +42,9 @@ def idm2(player, a, b, c, d):
 #######################################
 
 def idm3(player, a, b, c, d):
-	sign = 1
 	odd_player = 0
 	if (player == 0):
 		odd_player = 1
-		sign = -1
 	score, blank, piece = 0, 0, 0
 	lst = [a,b,c,d]
 	for i in lst:
@@ -70,14 +68,17 @@ def idm3(player, a, b, c, d):
 	if (piece == 3 and blank == 1):
 		score += 90
 
-	return score*sign
-
+	return score
 
 def score_pos(ar, coord, calc_func, p):
 	x = coord[0]
 	y = coord[1]
 	if (y == 3):
-		score = 3
+		count = 1
+		for x in range(TX-1,-1,-1):
+			if ar[x][y] == p:
+				count += 1
+		score = 3*count
 	else:
 		score = 0
 	for i in range(-3, 1):
@@ -100,10 +101,12 @@ def score_pos(ar, coord, calc_func, p):
 
 	return score
 
-def score_ar(ar, calc_func, player):
+def score_ar(ar, calc_func, player, org_player):
 	mn = cp_arena(ar)
 	max_point = NEG_INF
-	tmp, px, py = 0, None, None
+	tmp, px, py, sign = 0, None, None, 1
+	if player != org_player:
+		sign = -1
 	for y in range(TY):
 		new_mn = cp_arena(mn)
 		coord = turn(new_mn, y, PLAYER[player])
@@ -114,9 +117,9 @@ def score_ar(ar, calc_func, player):
 			max_point = tmp
 			px = coord[0]
 			py = coord[1]
-	return (max_point, py)
+	return (sign*max_point, py)
 
-def minimax(ar, player, NB_PLAYED, depth, result, calc_func, a, b):
+def minimax(ar,player,org_player,NB_PLAYED,depth,result,calc_func,a,b):
 	if result == 1:
 		return (1000000, None)
 	elif result == 0:
@@ -124,10 +127,10 @@ def minimax(ar, player, NB_PLAYED, depth, result, calc_func, a, b):
 	elif result == -1:
 		return (-1000000, None)
 	if (depth == 0):
-		m = score_ar(ar, calc_func, player)
+		m = score_ar(ar, calc_func, player,org_player)
 		return (m[0], m[1])
 	coord = ()
-	if player == 1:
+	if player == org_player: # Maximal Player
 		max_v, py = NEG_INF, None
 		for y in range(TY):
 			cp_ar = cp_arena(ar)
@@ -138,7 +141,7 @@ def minimax(ar, player, NB_PLAYED, depth, result, calc_func, a, b):
 				result = 1
 			elif NB_PLAYED == TX*TY:
 				result = 0
-			score = minimax(cp_ar,0,NB_PLAYED+1,depth-1,result,calc_func,a,b)
+			score = minimax(cp_ar,1-player,org_player,NB_PLAYED+1,depth-1,result,calc_func,a,b)
 			if score[0] > max_v:
 				max_v = score[0]
 				py = coord[1]
@@ -147,7 +150,7 @@ def minimax(ar, player, NB_PLAYED, depth, result, calc_func, a, b):
 			if a >= b:
 				break
 		return (max_v, py)
-	else: # player 0
+	else: # Minimal Player
 		min_v, py = INF, None
 		for y in range(TY):
 			cp_ar = cp_arena(ar)
@@ -158,7 +161,7 @@ def minimax(ar, player, NB_PLAYED, depth, result, calc_func, a, b):
 				result = -1
 			elif NB_PLAYED == TX*TY:
 				result = 0
-			score = minimax(cp_ar,1,NB_PLAYED+1,depth-1,result,calc_func,a,b)
+			score = minimax(cp_ar,1-player,org_player,NB_PLAYED+1,depth-1,result,calc_func,a,b)
 			if score[0] < min_v:
 				min_v = score[0]
 				py = coord[1]
@@ -202,10 +205,9 @@ def AI_Mode(mode=2, depth=3):
 			if mode == 1:
 				y = randrange(TY)
 			elif mode == 2:
-				mn = cp_arena(arena)
-				y = score_ar(mn,idm2,t)[1]
+				y = score_ar(arena,idm2,t,t)[1]
 			elif mode == 3:
-				y = minimax(arena,1,NB_PLAYED,depth,2,idm3,NEG_INF,INF)[1]
+				y = minimax(arena,t,t,NB_PLAYED,depth,2,idm3,NEG_INF,INF)[1]
 
 		clear()
 		coord = turn(arena, y, PLAYER[t])
@@ -230,11 +232,11 @@ def AI_vs_AI(mode, depth1, depth2):
 	while (NB_PLAYED < TX*TY):
 		if (t == 0):
 			if mode:
-				y = score_ar(arena, idm2, t)[1]
+				y = score_ar(arena, idm2, t, t)[1]
 			else:
-				y = minimax(arena,0,NB_PLAYED,depth1,2,idm3,NEG_INF,INF)[1]
+				y = minimax(arena,t,t,NB_PLAYED,depth1,2,idm3,NEG_INF,INF)[1]
 		else:
-			y = minimax(arena,1,NB_PLAYED,depth2,2,idm3,NEG_INF,INF)[1]
+			y = minimax(arena,t,t,NB_PLAYED,depth2,2,idm3,NEG_INF,INF)[1]
 		clear()
 
 		coord = turn(arena, y, PLAYER[t])
