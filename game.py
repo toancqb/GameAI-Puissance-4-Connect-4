@@ -1,7 +1,14 @@
+###############################
+## Author: TRAN Quang Toan   ##
+## Project Game Connect 4    ##
+## Version 1 		    	 ##
+## 10 Feb 2020		     	 ##
+###############################
+
 from define import *
 from ft_lib import *
 from AI_lib import *
-from termcolor import colored, cprint
+from termcolor import colored
 
 def Normal_Game():
 	t, NB_PLAYED = 0, 0

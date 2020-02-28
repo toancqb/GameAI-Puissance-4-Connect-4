@@ -1,10 +1,17 @@
-import os
-import copy
-from termcolor import colored, cprint
+###############################
+## Author: TRAN Quang Toan   ##
+## Project Game Connect 4    ##
+## Version 1 		    	 ##
+## 10 Feb 2020		     	 ##
+###############################
+
+from os import system
+from copy import deepcopy
+from termcolor import colored
 from define import *
 
 def cp_arena(ar):
-	mn = copy.deepcopy(ar)
+	mn = deepcopy(ar)
 	return mn
 
 def init_arena(nx, ny):
@@ -24,7 +31,7 @@ def turn(ar, y, player):
 	return ()
 
 def clear():
-   os.system('clear')
+   system('clear')
 
 def print_c(n, c):
 	s = c * n

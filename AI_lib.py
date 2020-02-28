@@ -1,10 +1,17 @@
+###############################
+## Author: TRAN Quang Toan   ##
+## Project Game Connect 4    ##
+## Version 1 		    	 ##
+## 10 Feb 2020		     	 ##
+###############################
+
 from define import *
 from ft_lib import *
 from random import randrange
 
 def idm2(player, a, b, c, d):
 	odd_player = 0
-	if (player == 0):
+	if player == 0:
 		odd_player = 1
 	score, blank, piece = 0, 0, 0
 	lst = [a,b,c,d]
