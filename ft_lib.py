@@ -1,8 +1,8 @@
 ###############################
 ## Author: TRAN Quang Toan   ##
-## Project Game Connect 4    ##
-## Version 1 		    	 ##
-## 10 Feb 2020		     	 ##
+## Project Game Puissance 4  ##
+## Version 1                 ##
+## 10 Feb 2020               ##
 ###############################
 
 from os import system
