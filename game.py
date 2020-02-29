@@ -55,15 +55,15 @@ def Menu():
 			continue
 	clear()
 	if (n == 1):
-		Normal_Game() 		 ## 2 Players
+		Normal_Game()         ## 2 Players
 	elif (n == 2):
-		AI_Mode(1) 			 ## StupidAI
+		AI_Mode(1)            ## StupidAI
 	elif (n == 3):
-		AI_Mode(2) 			 ## NormalAI
+		AI_Mode(2)            ## NormalAI
 	elif (n == 4):
-		AI_Mode(3, 5) 		 ## MinimaxAI
+		AI_Mode(3, 5)         ## MinimaxAI
 	elif (n == 5):
 		AI_vs_AI(False, 4, 5) ##True:  NormalAI vs MinimaxAI
-							 ##False: MinimaxAI vs NormalAI
+                              ##False: MinimaxAI vs NormalAI
 
 Menu()
