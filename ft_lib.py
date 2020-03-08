@@ -109,3 +109,16 @@ def is_winning_pos(ar, x, y):
 				, ar[x+i[0]-2][y+i[1]+2], ar[x+i[0]-3][y+i[1]+3])):
 				return True
 	return False
+
+def choose_number(str, i_min, i_max, warning):
+	while True:
+		try:
+			y = int(input(str))
+			if (y < i_min or y > i_max):
+				print(warning)
+				continue
+			break
+		except ValueError:
+			print(WARN_TYPE)
+			continue
+	return y

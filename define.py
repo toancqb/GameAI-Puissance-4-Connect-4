@@ -21,7 +21,8 @@ BLK = '   '
 PLAYER = [colored('-O-', 'red','on_yellow', attrs=['bold'])
 	, colored('-X-', 'red','on_blue', attrs=['bold'])]
 WARN_NUMBER = colored("0 -> 6 Only, Please!", 'red', 'on_white', attrs=['bold'])
-WARN_NUMBER_MENU = colored("1 -> 2 Only, Please!", 'red', 'on_white', attrs=['bold'])
+WARN_NUMBER_MENU = colored("1 -> 5 Only, Please!", 'red', 'on_white', attrs=['bold'])
+WARN_NUMBER_TURN = colored("0 -> 1 Only, Please!", 'red', 'on_white', attrs=['bold'])
 WARN_TYPE = colored("Integer Only, Please type again!", 'red', 'on_white', attrs=['bold'])
 WARN_ILLEGALMOVE = colored("Out of Range, Please try again!", 'red', 'on_white', attrs=['bold'])
 

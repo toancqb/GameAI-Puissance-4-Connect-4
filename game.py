@@ -16,16 +16,9 @@ def Normal_Game():
 	print_arena(arena)
 	while (NB_PLAYED < TX*TY):
 		coord = ()
-		s = "Chon vi tri tu 0-6\n  [ PLAYER "+str(t+1)+"] ("+PLAYER[t]+") : "
+		s = "Choose your Move from 0 -> 6 \n  [ PLAYER "+str(t+1)+"] ("+PLAYER[t]+") : "
 		s = colored(s, 'white', 'on_red', attrs=["bold"])
-		try:
-			y = int(input(s))
-			if (y < 0 or y > 6):
-				print(WARN_NUMBER)
-				continue
-		except ValueError:
-			print(WARN_TYPE)
-			continue
+		y = choose_number(s, 0, 6, WARN_NUMBER)
 		clear()
 		coord = turn(arena, y, PLAYER[t])
 		if (coord == ()):
@@ -43,16 +36,7 @@ def Normal_Game():
 
 def Menu():
 	print(COLORED_TITLE)
-	while True:
-		try:
-			n = (int)(input(COLORDED_OPT))
-			if (n < 1 or n > 5):
-				print(WARN_NUMBER_MENU)
-				continue
-			break
-		except ValueError:
-			print(WARN_TYPE)
-			continue
+	n = choose_number(COLORDED_OPT, 1, 5, WARN_NUMBER_MENU)
 	clear()
 	if (n == 1):
 		Normal_Game()         ## 2 Players
@@ -61,7 +45,7 @@ def Menu():
 	elif (n == 3):
 		AI_Mode(2)            ## NormalAI
 	elif (n == 4):
-		AI_Mode(3, 5)         ## MinimaxAI
+		AI_Mode(3, 7)         ## MinimaxAI
 	elif (n == 5):
 		AI_vs_AI(False, 4, 5) ##True:  NormalAI vs MinimaxAI
                               ##False: MinimaxAI vs NormalAI

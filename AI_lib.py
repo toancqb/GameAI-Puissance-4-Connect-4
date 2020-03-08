@@ -167,7 +167,8 @@ def minimax(ar,player,org_player,NB_PLAYED,depth,result,calc_func,a,b):
 		return (m[0], m[1])
 	coord = ()
 	if player == org_player: # Maximal Player
-		lst_y = lst_applicable(ar, TY, player)
+		#lst_y = lst_applicable(ar, TY, player)
+		lst_y = [i for i in range(TY) if turn(deepcopy(ar), i, PLAYER[player]) != ()]
 		shuffle(lst_y)
 		max_v, py = NEG_INF, None
 		for y in lst_y:
@@ -185,9 +186,12 @@ def minimax(ar,player,org_player,NB_PLAYED,depth,result,calc_func,a,b):
 				a = max_v
 			if a >= b:
 				break
+		if py == None:
+			py = lst_applicable(ar, TY, player)[0]
 		return (max_v, py)
 	else: # Minimal Player
-		lst_y = lst_applicable(ar, TY, player)
+		#lst_y = lst_applicable(ar, TY, player)
+		lst_y = [i for i in range(TY) if turn(deepcopy(ar), i, PLAYER[player]) != ()]
 		shuffle(lst_y)
 		min_v, py = INF, None
 		for y in lst_y:
@@ -215,30 +219,14 @@ def AI_Mode(mode=2, depth=3):
 	NB_PLAYED = 0
 	arena = init_arena(TX, TY)
 	print_arena(arena)
-	while True:
-		try:
-			y = int(input(CHOOSE_TURN))
-			if (y < 0 or y > 1):
-				print(WARN_NUMBER)
-				continue
-			break
-		except ValueError:
-			print(WARN_TYPE)
-			continue
+	y = choose_number(CHOOSE_TURN, 0, 1, WARN_NUMBER_TURN)
 	t = 1 - y
 	while (NB_PLAYED < TX*TY):
 		coord = ()
-		s = "Chon vi tri tu 0-6\n  [ PLAYER "+str(t+1)+"] ("+PLAYER[t]+") : "
+		s = "Choose your Move from 0 -> 6 \n  [ PLAYER "+str(t+1)+"] ("+PLAYER[t]+") : "
 		s = colored(s, 'white', 'on_red', attrs=["bold"])
 		if (t == 0):
-			try:
-				y = int(input(s))
-				if (y < 0 or y > 6):
-					print(WARN_NUMBER)
-					continue
-			except ValueError:
-				print(WARN_TYPE)
-				continue
+			y = choose_number(s, 0, 6, WARN_NUMBER)
 		else:
 			if mode == 1:
 				y = randrange(TY)
