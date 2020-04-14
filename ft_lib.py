@@ -14,6 +14,12 @@ def cp_arena(ar):
 	mn = deepcopy(ar)
 	return mn
 
+def getlist(n, c):
+	lst = []
+	for i in range(n):
+		lst.append(c)
+	return lst
+
 def init_arena(nx, ny):
 	ar = []
 	for i in range(nx):
@@ -47,11 +53,13 @@ def lst_applicable(ar, n, p):
 		lst_y.append(i)
 	return lst_y
 
-def getlist(n, c):
-	lst = []
-	for i in range(n):
-		lst.append(c)
-	return lst
+def lst_applicable2(ar, n, p):
+	lst_y = []
+	for y in range(n):
+		for x in range(TX-1, -1, -1):
+			if is_pos_blank(ar, x, y) == True:
+				lst_y.append(y)
+	return lst_y
 
 def getlist2(n):
 	lst = []

@@ -61,10 +61,12 @@ def idm3(player, a, b, c, d):
 			piece += 1
 	if (piece == 4 and blank == 0):
 		score += 100
-	if (piece == 3 and blank == 1):
-		score += 5
+	elif (piece == 3 and blank == 1):
+		score += 9
 	elif (piece == 2 and blank == 2):
-		score += 2
+		score += 4
+	elif piece == 1 and blank == 3:
+		score += 1
 
 	blank, piece = 0, 0
 	for i in lst:
@@ -73,7 +75,7 @@ def idm3(player, a, b, c, d):
 		if (i == PLAYER[odd_player]):
 			piece += 1
 	if (piece == 3 and blank == 1):
-		score += 90
+		score += 100
 
 	return score
 
@@ -155,10 +157,83 @@ def score_ar(ar, calc_func, player, org_player):
 			py = coord[1]
 	return (sign*max_point, py)
 
+def score_ar_z(ar, calc_func, player, org_player):
+	tmp, px, py, sign = 0, None, None, 1
+	score = 0
+	if player != org_player:
+		sign = -1
+	for x in range(TX):
+		for y in range(TY):
+			if ar[x][y] != BLK:
+				score += score_pos(ar, (x,y), calc_func, player)
+				if y == 3:
+					score += 3
+	return (sign*score, None)
+
 def minimax(ar,player,org_player,NB_PLAYED,depth,result,calc_func,a,b):
 	if result == 1:
 		return (1000000, None)
-	elif result == 0:
+	elif result == 0 or NB_PLAYED == TX*TY:
+		return (0, None)
+	elif result == -1:
+		return (-1000000, None)
+	if (depth == 0):
+		m = score_ar_z(ar, calc_func, player,org_player)
+		return (m[0], m[1])
+	coord = ()
+	if player == org_player: # Maximal Player
+		#lst_y = lst_applicable(ar, TY, player)
+		lst_y = [i for i in range(TY) if turn(deepcopy(ar), i, PLAYER[player]) != ()]
+		shuffle(lst_y)
+		max_v, py = NEG_INF, None
+		for y in lst_y:
+			cp_ar = cp_arena(ar)
+			coord = turn(cp_ar, y, PLAYER[player])
+			if is_winning_pos(cp_ar, coord[0], coord[1]):
+				result = 1
+			elif NB_PLAYED == TX*TY:
+				result = 0
+			score = minimax(cp_ar,1-player,org_player,NB_PLAYED+1,depth-1,result,calc_func,a,b)
+			if score[0] - TIME_PENALTY*(NB_PLAYED+1) > max_v:
+				max_v = score[0] - TIME_PENALTY*(NB_PLAYED+1)
+				py = coord[1]
+			if a < max_v:
+				a = max_v
+			if a >= b:
+				break
+		if py == None:
+			py = lst_applicable2(ar, TY, player)[0]
+		return (max_v, py)
+	else: # Minimal Player
+		#lst_y = lst_applicable(ar, TY, player)
+		lst_y = [i for i in range(TY) if turn(deepcopy(ar), i, PLAYER[player]) != ()]
+		shuffle(lst_y)
+		min_v, py = INF, None
+		for y in lst_y:
+			cp_ar = cp_arena(ar)
+			coord = turn(cp_ar, y, PLAYER[player])
+			if is_winning_pos(cp_ar, coord[0], coord[1]):
+				result = -1
+			elif NB_PLAYED == TX*TY:
+				result = 0
+			score = minimax(cp_ar,1-player,org_player,NB_PLAYED+1,depth-1,result,calc_func,a,b)
+			if score[0] + TIME_PENALTY*(NB_PLAYED+1) < min_v:
+				min_v = score[0] + TIME_PENALTY*(NB_PLAYED+1)
+				py = coord[1]
+			if b > min_v:
+				b = min_v
+			if a >= b:
+				break
+		if py == None:
+			py = lst_applicable2(ar, TY, player)[0]
+		return (min_v, py)
+
+#######################################
+
+def minimax2(ar,player,org_player,NB_PLAYED,depth,result,calc_func,a,b):
+	if result == 1:
+		return (1000000, None)
+	elif result == 0 or NB_PLAYED == TX*TY:
 		return (0, None)
 	elif result == -1:
 		return (-1000000, None)
@@ -179,15 +254,15 @@ def minimax(ar,player,org_player,NB_PLAYED,depth,result,calc_func,a,b):
 			elif NB_PLAYED == TX*TY:
 				result = 0
 			score = minimax(cp_ar,1-player,org_player,NB_PLAYED+1,depth-1,result,calc_func,a,b)
-			if score[0] > max_v:
-				max_v = score[0]
+			if score[0] - TIME_PENALTY*(NB_PLAYED+1) > max_v:
+				max_v = score[0] - TIME_PENALTY*(NB_PLAYED+1)
 				py = coord[1]
 			if a < max_v:
 				a = max_v
 			if a >= b:
 				break
 		if py == None:
-			py = lst_applicable(ar, TY, player)[0]
+			py = lst_applicable2(ar, TY, player)[0]
 		return (max_v, py)
 	else: # Minimal Player
 		#lst_y = lst_applicable(ar, TY, player)
@@ -202,15 +277,15 @@ def minimax(ar,player,org_player,NB_PLAYED,depth,result,calc_func,a,b):
 			elif NB_PLAYED == TX*TY:
 				result = 0
 			score = minimax(cp_ar,1-player,org_player,NB_PLAYED+1,depth-1,result,calc_func,a,b)
-			if score[0] < min_v:
-				min_v = score[0]
+			if score[0] + TIME_PENALTY*(NB_PLAYED+1) < min_v:
+				min_v = score[0] + TIME_PENALTY*(NB_PLAYED+1)
 				py = coord[1]
 			if b > min_v:
 				b = min_v
 			if a >= b:
 				break
 		if py == None:
-			py = lst_applicable(ar, TY, player)[0]
+			py = lst_applicable2(ar, TY, player)[0]
 		return (min_v, py)
 
 #######################################
@@ -221,6 +296,7 @@ def AI_Mode(mode=2, depth=3):
 	print_arena(arena)
 	y = choose_number(CHOOSE_TURN, 0, 1, WARN_NUMBER_TURN)
 	t = 1 - y
+	zz = (0, 0)
 	while (NB_PLAYED < TX*TY):
 		coord = ()
 		s = "Choose your Move from 0 -> 6 \n  [ PLAYER "+str(t+1)+"] ("+PLAYER[t]+") : "
@@ -233,7 +309,9 @@ def AI_Mode(mode=2, depth=3):
 			elif mode == 2:
 				y = score_ar(arena,idm2,t,t)[1]
 			elif mode == 3:
-				y = minimax(arena,t,t,NB_PLAYED,depth,2,idm3,NEG_INF,INF)[1]
+				zz = minimax(arena,t,t,NB_PLAYED,depth,2,idm3,NEG_INF,INF)
+				y = zz[1]
+
 		clear()
 		coord = turn(arena, y, PLAYER[t])
 		if (coord == ()):
@@ -241,6 +319,7 @@ def AI_Mode(mode=2, depth=3):
 			print(WARN_ILLEGALMOVE)
 			continue
 		print_arena(arena)
+		print(zz[1],":",zz[0],"\n")
 		if (is_winning_pos(arena, coord[0], coord[1])):
 			print("\nFelicitation!! [ PLAYER", t+1, PLAYER[t], "] WON!!\n")
 			break
@@ -258,9 +337,9 @@ def AI_vs_AI(mode, depth1, depth2):
 			if mode:
 				y = score_ar(arena, idm2, t, t)[1]
 			else:
-				y = minimax(arena,t,t,NB_PLAYED,depth1,2,idm4,NEG_INF,INF)[1]
+				y = minimax(arena,t,t,NB_PLAYED,depth1,2,idm3,NEG_INF,INF)[1]
 		else:
-			y = minimax(arena,t,t,NB_PLAYED,depth2,2,idm3,NEG_INF,INF)[1]
+			y = minimax2(arena,t,t,NB_PLAYED,depth2,2,idm4,NEG_INF,INF)[1]
 		clear()
 
 		coord = turn(arena, y, PLAYER[t])

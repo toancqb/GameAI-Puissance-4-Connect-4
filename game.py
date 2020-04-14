@@ -45,9 +45,9 @@ def Menu():
 	elif (n == 3):
 		AI_Mode(2)            ## NormalAI
 	elif (n == 4):
-		AI_Mode(3, 7)         ## MinimaxAI
+		AI_Mode(3, 6)         ## MinimaxAI
 	elif (n == 5):
-		AI_vs_AI(False, 4, 5) ##True:  NormalAI vs MinimaxAI
-                              ##False: MinimaxAI vs NormalAI
+		AI_vs_AI(False, 6, 6) ##True:  NormalAI vs MinimaxAI
+                              ##False: MinimaxAI vs MinimaxAI
 
 Menu()
