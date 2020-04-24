@@ -9,6 +9,14 @@ from define import *
 from ft_lib import *
 from random import randrange, shuffle
 
+######################################
+## 2eme version de fonction evaluation
+## [O][O][O][O] += 1000000
+## [O][ ][O][O] += 5 (avoir 1 BLK)
+## [O][ ][ ][O] += 2 (avoir 2 BLK)
+## [X][O][X][X] += 10000 (Eviter le pire, l'adversaire va gagner si on ne l'emperche pas)
+## [O][X][X][O] += 500
+## [X][O][X][ ] += 500
 def idm2(player, a, b, c, d):
 	odd_player = 0
 	if player == 0:
@@ -47,7 +55,12 @@ def idm2(player, a, b, c, d):
 
 
 #######################################
-
+## 3eme version de fonction evaluation
+## [O][O][O][O] += 100
+## [O][ ][O][O] += 9 (avoir 1 BLK)
+## [O][ ][ ][O] += 4 (avoir 2 BLK)
+## [O][ ][ ][ ] += 1 (avoir 3 BLK)
+## [X][O][X][X] += 100 (Eviter le pire, l'adversaire va gagner si on ne l'emperche pas)
 def idm3(player, a, b, c, d):
 	odd_player = 0
 	if (player == 0):
@@ -79,6 +92,12 @@ def idm3(player, a, b, c, d):
 
 	return score
 
+#######################################
+## 4eme version de fonction evaluation
+## [O][O][O][O] += 100000
+## [O][ ][O][O] += 5 (avoir 1 BLK)
+## [O][ ][ ][O] += 2 (avoir 2 BLK)
+## [X][O][X][X] += 100000 (Eviter le pire, l'adversaire va gagner si on ne l'emperche pas)
 def idm4(player, a, b, c, d):
 	odd_player = 0
 	if (player == 0):
@@ -289,13 +308,17 @@ def minimax2(ar,player,org_player,NB_PLAYED,depth,result,calc_func,a,b):
 		return (min_v, py)
 
 #######################################
-
-def AI_Mode(mode=2, depth=3):
+## mode = 1 => 'AI' joue random mouvement entre 0 et 6
+## mode = 2 => AI_Normal
+## mode = 3 => AI_Minimax
+## depth = 3 par default
+def AI_Mode(mode=2, depth=3): 
 	NB_PLAYED = 0
 	arena = init_arena(TX, TY)
 	print_arena(arena)
 	y = choose_number(CHOOSE_TURN, 0, 1, WARN_NUMBER_TURN)
-	t = 1 - y
+	t = 1 - y ## Si y = 0 => Joueur choisit Non => t = 1 => AI va commencer le premier mouvement
+	          ## Si y = 1 => Joueur choisit Oui => t = 0 => L'homme va commencer le premier mouvement
 	zz = (0, 0)
 	while (NB_PLAYED < TX*TY):
 		coord = ()
@@ -327,7 +350,12 @@ def AI_Mode(mode=2, depth=3):
 		if (NB_PLAYED == TX*TY):
 			print(TIE)
 			break
-
+##
+####################################################
+## mode = True => AI_Normal vs AI_Minimax
+## mode = False => AI_Minimax vs AI_Minimax
+## Le but pout comparer entre les AIs et les fonctions evaluations
+## Et c'est pour tester des erreurs rapidement
 def AI_vs_AI(mode, depth1, depth2):
 	t, NB_PLAYED = 0, 0
 	arena = init_arena(TX, TY)
