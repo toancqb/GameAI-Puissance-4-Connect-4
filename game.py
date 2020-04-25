@@ -21,7 +21,7 @@ def Normal_Game():
 		s = "Choose your Move from 0 -> 6 \n  [ PLAYER "+str(t+1)+"] ("+PLAYER[t]+") : "
 		s = colored(s, 'white', 'on_red', attrs=["bold"])
 		y = choose_number(s, 0, 6, WARN_NUMBER) ## On saisit 0->6
-		clear()
+		fclear()
 		coord = turn(arena, y, PLAYER[t]) ## On place la balle a la position y(0-6)
 		
 		if (coord == ()): ## Si la position y n'est pas valide => Il faut re-saisir y
@@ -41,9 +41,10 @@ def Normal_Game():
 			break
 
 def Menu():
+	fclear()
 	print(COLORED_TITLE)
 	n = choose_number(COLORDED_OPT, 1, 5, WARN_NUMBER_MENU)
-	clear()
+	fclear()
 	if (n == 1):
 		Normal_Game()         ## 2 Players
 	elif (n == 2):
@@ -53,7 +54,7 @@ def Menu():
 	elif (n == 4):
 		AI_Mode(3, 6)         ## MinimaxAI 
 	elif (n == 5):
-		AI_vs_AI(False, 6, 6) ##True:  NormalAI vs MinimaxAI
+		AI_vs_AI(False, 4, 4) ##True:  NormalAI vs MinimaxAI
                               ##False: MinimaxAI vs MinimaxAI
                               ## Le but pout comparer entre les AIs et les fonctions evaluations
                               ## Et c'est pour tester des erreurs rapidement

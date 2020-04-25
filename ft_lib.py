@@ -5,7 +5,7 @@
 ## 10 Feb 2020               ##
 ###############################
 
-from os import system
+import os
 from copy import deepcopy
 from termcolor import colored
 from define import BLK, TX, TY, WARN_TYPE, BT, CT, PLAYER, COLORED_TITLE
@@ -36,8 +36,11 @@ def turn(ar, y, player): ## On cherche l'axe x jusqu'a la position disponible
 			return (x, y)
 	return ()
 
-def clear(): ## On efface l'ecran
-   system('clear')
+def clear(): ## On efface l'ecran terminal sur Linux
+	os.system('clear')
+
+def fclear(): ## J'ai trouve la solution sur internet pour effacer terminal 
+    os.system('cls' if os.name=='nt' else 'clear') ## sur Windows ou Linux
 
 def print_c(n, c): ## Print n fois charactere c
 	s = c * n
