@@ -18,11 +18,11 @@ def Normal_Game():
 	##
 	while (NB_PLAYED < TX*TY): ## Si NB_PLAYED < TX*TY (42): On continuera a jouer
 		coord = ()
-		s = "Choose your Move from 0 -> 6 \n  [ PLAYER "+str(t+1)+"] ("+PLAYER[t]+") : "
+		s = "Choose your Move from 0 -> 6 \n  [ PLAYER "+str(t+1)+"] ("+PLAYER_COLORED[t]+") : "
 		s = colored(s, 'white', 'on_red', attrs=["bold"])
 		y = choose_number(s, 0, 6, WARN_NUMBER) ## On saisit 0->6
 		fclear()
-		coord = turn(arena, y, PLAYER[t]) ## On place la balle a la position y(0-6)
+		coord = turn(arena, y, t) ## On place la balle a la position y(0-6)
 		
 		if (coord == ()): ## Si la position y n'est pas valide => Il faut re-saisir y
 			print_arena(arena)
@@ -32,7 +32,7 @@ def Normal_Game():
 		print_arena(arena) ## Si la position y est valide
 		                   ## On verifie si player t(0|1) a gagne et quitte la boucle
 		if (is_winning_pos(arena, coord[0], coord[1])):
-			print("\nFelicitation!! [ PLAYER", t+1, PLAYER[t], "] WON!!\n")
+			print("\nFelicitation!! [ PLAYER", t+1, PLAYER_COLORED[t], "] WON!!\n")
 			break
 		## Sinon, l'adversaire va jouer et le nombre mouvements +1
 		t ,NB_PLAYED = 1 - t, NB_PLAYED + 1
@@ -54,10 +54,10 @@ def Menu():
 	elif (n == 4):
 		AI_Mode(3, 6)         ## MinimaxAI 
 	elif (n == 5):
-		AI_vs_AI(False, 4, 4) ##True:  NormalAI vs MinimaxAI
-                              ##False: MinimaxAI vs MinimaxAI
-                              ## Le but pout comparer entre les AIs et les fonctions evaluations
-                              ## Et c'est pour tester des erreurs rapidement
+		AI_vs_AI(False,idm5,6,idm3,4)  ## True:  NormalAI vs MinimaxAI
+                              ## False: MinimaxAI vs MinimaxAI
+                              ## Le but est pour comparer entre les AIs et entre les fonctions evaluations
+                              ## Et c'est pour tester des erreurs rapidemment
 
 ######
 # Le programme va commencer ici, par appeller la fonction Menu()
@@ -66,3 +66,111 @@ Menu()
 #
 #
 ##########
+
+# best_agent = [100,24,16,1,100] 
+# curr_agent = [1,1,1,1,1]
+
+# def ef_best(player,a,b,c,d):
+# 	odd_player = 0
+# 	if (player == 0):
+# 		odd_player = 1
+# 	score, blank, piece = 0, 0, 0
+# 	lst = [a,b,c,d]
+# 	for i in lst:
+# 		if (i == BLK):
+# 			blank += 1
+# 		if (i == player):
+# 			piece += 1
+# 	if (piece == 4 and blank == 0):
+# 		score += best_agent[0]
+# 	elif (piece == 3 and blank == 1):
+# 		score += best_agent[1]
+# 	elif (piece == 2 and blank == 2):
+# 		score += best_agent[2]
+# 	elif piece == 1 and blank == 3:
+# 		score += best_agent[3]
+
+# 	blank, piece = 0, 0
+# 	for i in lst:
+# 		if (i == player):
+# 			blank += 1
+# 		if (i == odd_player):
+# 			piece += 1
+# 	if (piece == 3 and blank == 1):
+# 		score += best_agent[4]
+
+# 	return score
+
+# def ef_curr(player,a,b,c,d):
+# 	odd_player = 0
+# 	if (player == 0):
+# 		odd_player = 1
+# 	score, blank, piece = 0, 0, 0
+# 	lst = [a,b,c,d]
+# 	for i in lst:
+# 		if (i == BLK):
+# 			blank += 1
+# 		if (i == player):
+# 			piece += 1
+# 	if (piece == 4 and blank == 0):
+# 		score += curr_agent[0]
+# 	elif (piece == 3 and blank == 1):
+# 		score += curr_agent[1]
+# 	elif (piece == 2 and blank == 2):
+# 		score += curr_agent[2]
+# 	elif piece == 1 and blank == 3:
+# 		score += curr_agent[3]
+
+# 	blank, piece = 0, 0
+# 	for i in lst:
+# 		if (i == player):
+# 			blank += 1
+# 		if (i == odd_player):
+# 			piece += 1
+# 	if (piece == 3 and blank == 1):
+# 		score += curr_agent[4]
+# 	# print(curr_agent)
+# 	return score
+
+# def deep_learning():
+# 	global best_agent
+# 	global curr_agent
+# 	# for i1 in range(15,25,3):
+# 	# 	for i2 in range(10,17,2):
+# 			# for i3 in range(1,3,1):
+# 	champs = [[100,21,14,1,100] ]
+# 	for x in champs:
+		
+# 		curr_agent = x
+# 		res1, res2 = [], []
+# 		for game in range(10): ## best vs current
+# 			res1.append(AI_vs_AI(False,ef_best,4,ef_curr,4))
+# 		for game in range(10): ## current vs best
+# 			res2.append(AI_vs_AI(False,ef_curr,4,ef_best,4))
+# 		r_curr = count(res1,1)+count(res2,0)
+# 		r_best = count(res1,0)+count(res2,1)
+# 		print(best_agent,"vs",curr_agent,":",r_best,"-",r_curr)
+# 		if count(res1,1)+count(res2,0) > count(res1,0)+count(res2,1):
+# 			print(best_agent, "-->", curr_agent)
+# 			best_agent = curr_agent
+	
+# 	print(best_agent)
+
+
+# def test():
+# 	global best_agent
+# 	global curr_agent
+# 	curr_agent = [1,1,1,1,1]
+# 	res1, res2 = [], []
+# 	for game in range(5): ## best vs current
+# 		res1.append(AI_vs_AI(False,ef_best,4,ef_curr,4))
+# 	for game in range(5): ## current vs best
+# 		res2.append(AI_vs_AI(False,ef_curr,4,ef_best,4))
+# 	if count(res1,1)+count(res2,0) > count(res1,0)+count(res2,1):
+# 		best_agent = curr_agent
+# 	print(res1, res2)
+# 	print(best_agent)
+
+# deep_learning()
+# test()
+# AI_vs_AI(True,idm3,4,idm5,4)

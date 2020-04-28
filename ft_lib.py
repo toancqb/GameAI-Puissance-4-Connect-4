@@ -6,13 +6,8 @@
 ###############################
 
 import os
-from copy import deepcopy
 from termcolor import colored
-from define import BLK, TX, TY, WARN_TYPE, BT, CT, PLAYER, COLORED_TITLE
-
-def cp_arena(ar): 
-	mn = deepcopy(ar) ## Utilisation deepcopy pour faire la copie completement
-	return mn
+from define import *
 
 def getlist(n, c): ## creer une liste qui contient n fois charectere c
 	lst = []
@@ -22,17 +17,14 @@ def getlist(n, c): ## creer une liste qui contient n fois charectere c
 
 def init_arena(nx, ny): ## creer une liste qui contient nx fois une liste 
 	ar = []             ##  qui contient n fois la chaine de charactere BLK
-	for i in range(nx):
+	for i in range(nx): ## la boucle pour faire nx fois
 		ar.append(getlist(ny, BLK))
 	return ar
 
-def turn_to_x_y(ar, x, y, player): ## PLacer la balle a la position (x, y)
-	ar[x][y] = player
-
 def turn(ar, y, player): ## On cherche l'axe x jusqu'a la position disponible
-	for x in range(TX-1, -1, -1):
-		if is_pos_blank(ar, x, y) == True:
-			turn_to_x_y(ar, x, y, player)
+	for x in range(TX-1, -1, -1): 
+		if ar[x][y] == BLK:
+			ar[x][y] = player
 			return (x, y)
 	return ()
 
@@ -49,19 +41,11 @@ def print_c(n, c): ## Print n fois charactere c
 def lst_applicable(ar, n, p): ## On cherche des positions disponibles pour jouer
 	lst_y = []
 	for i in range(n): ## Pour chaque position l'axe y, on cherche position l'axe x
-		mn = cp_arena(ar) ## Si il y a un x disponible, on l'ajoute dans la liste lst_y 
-		coord = turn(mn, i, PLAYER[p])
-		if coord == ():
-			continue
-		lst_y.append(i)
-	return lst_y
-
-def lst_applicable2(ar, n, p): ## Simplifier la fonction de lst_applicable
-	lst_y = []
-	for y in range(n):
-		for x in range(TX-1, -1, -1):
-			if is_pos_blank(ar, x, y) == True:
-				lst_y.append(y)
+		## Si il y a un x disponible, on l'ajoute dans la liste lst_y 
+		for x in range(TX-1, -1, -1): 
+			if ar[x][i] == BLK:
+				lst_y.append(i)
+				break
 	return lst_y
 
 def getlist2(n): ## Creer une liste qui contien ' 0 ',' 1 ',' 2 '...
@@ -76,7 +60,10 @@ def print_arena(ar): ## Imprimer Arena Puissance 4
 	for i in ar:
 		print(CT, end='')
 		for j in i:
-			cj = colored(j, 'white','on_white')
+			if j != BLK:
+				cj = colored(PLAYER_COLORED[j], 'white','on_white')
+			else:
+				cj = colored(BLK2, 'white','on_white')
 			print(cj + CT, end='')
 		print_c(29, BT)
 	tmp = getlist2(TY)
@@ -85,9 +72,12 @@ def print_arena(ar): ## Imprimer Arena Puissance 4
 		cj = colored(j, 'blue','on_white', attrs=['bold'])
 		print(cj + CT, end='')
 	print_c(29, BT)
-
-def is_pos_blank(ar, x, y):
-	return (ar[x][y] == BLK)
+	
+	# print("\n")
+	# for i in ar:
+	# 	for j in i:
+	# 		print('[',j,']', end="")
+	# 	print("\n")
 
 def idm(a, b, c, d): ## Verifier Si a,b,c,d ont le meme valeur sauf que BLK
 	if (a == BLK or b == BLK or c == BLK or d == BLK):
@@ -100,6 +90,13 @@ def check_range(n, a, z): ## Verifier si le numero n est entre a et z
 	if (n >= a and n <= z):
 		return True
 	return False
+
+def count(lst, c):
+	ct = 0
+	for i in lst:
+		if i == c:
+			ct += 1
+	return ct
 
 ###################################################
 # Pour chaque position (x, y)
@@ -132,7 +129,7 @@ def is_winning_pos(ar, x, y):
 	return False
 ##
 ######################################################
-
+##
 def choose_number(str, i_min, i_max, warning): ## Saisir le numero
 	while True:
 		try:
