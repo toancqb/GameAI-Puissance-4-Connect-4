@@ -55,29 +55,29 @@ def getlist2(n): ## Creer une liste qui contien ' 0 ',' 1 ',' 2 '...
 	return lst
 
 def print_arena(ar): ## Imprimer Arena Puissance 4
-	print(COLORED_TITLE)
-	print_c(29, BT)
-	for i in ar:
-		print(CT, end='')
-		for j in i:
-			if j != BLK:
-				cj = colored(PLAYER_COLORED[j], 'white','on_white')
-			else:
-				cj = colored(BLK2, 'white','on_white')
-			print(cj + CT, end='')
-		print_c(29, BT)
-	tmp = getlist2(TY)
-	print(CT, end='')
-	for j in tmp:
-		cj = colored(j, 'blue','on_white', attrs=['bold'])
-		print(cj + CT, end='')
-	print_c(29, BT)
-	
-	# print("\n")
+	# print(COLORED_TITLE)
+	# print_c(29, BT)
 	# for i in ar:
+	# 	print(CT, end='')
 	# 	for j in i:
-	# 		print('[',j,']', end="")
-	# 	print("\n")
+	# 		if j != BLK:
+	# 			cj = colored(PLAYER_COLORED[j], 'white','on_white')
+	# 		else:
+	# 			cj = colored(BLK2, 'white','on_white')
+	# 		print(cj + CT, end='')
+	# 	print_c(29, BT)
+	# tmp = getlist2(TY)
+	# print(CT, end='')
+	# for j in tmp:
+	# 	cj = colored(j, 'blue','on_white', attrs=['bold'])
+	# 	print(cj + CT, end='')
+	# print_c(29, BT)
+	
+	print("\n")
+	for i in ar:
+		for j in i:
+			print('[',j,']', end="")
+		print("\n")
 
 def idm(a, b, c, d): ## Verifier Si a,b,c,d ont le meme valeur sauf que BLK
 	if (a == BLK or b == BLK or c == BLK or d == BLK):

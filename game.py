@@ -62,124 +62,124 @@ def Menu():
 ######
 # Le programme va commencer ici, par appeller la fonction Menu()
 #
-#Menu()
+Menu()
 #
 #
 ##########
 
-best_agent = [10000,33,10,5000] 
-curr_agent = [1,1,1,1]
+# best_agent = [10000,33,10,5000] 
+# curr_agent = [1,1,1,1]
 
-def ef_best(player,a,b,c,d):
-	odd_player = 0
-	if (player == 0):
-		odd_player = 1
-	score, blank, piece = 0, 0, 0
-	lst = [a,b,c,d]
-	for i in lst:
-		if (i == BLK):
-			blank += 1
-		if (i == player):
-			piece += 1
-	if (piece == 4 and blank == 0):
-		score += best_agent[0]
-	elif (piece == 3 and blank == 1):
-		score += best_agent[1]
-	elif (piece == 2 and blank == 2):
-		score += best_agent[2]
+# def ef_best(player,a,b,c,d):
+# 	odd_player = 0
+# 	if (player == 0):
+# 		odd_player = 1
+# 	score, blank, piece = 0, 0, 0
+# 	lst = [a,b,c,d]
+# 	for i in lst:
+# 		if (i == BLK):
+# 			blank += 1
+# 		if (i == player):
+# 			piece += 1
+# 	if (piece == 4 and blank == 0):
+# 		score += best_agent[0]
+# 	elif (piece == 3 and blank == 1):
+# 		score += best_agent[1]
+# 	elif (piece == 2 and blank == 2):
+# 		score += best_agent[2]
 
-	blank, piece = 0, 0
-	for i in lst:
-		if (i == player):
-			blank += 1
-		if (i == odd_player):
-			piece += 1
-	if (piece == 3 and blank == 1):
-		score += best_agent[3]
+# 	blank, piece = 0, 0
+# 	for i in lst:
+# 		if (i == player):
+# 			blank += 1
+# 		if (i == odd_player):
+# 			piece += 1
+# 	if (piece == 3 and blank == 1):
+# 		score += best_agent[3]
 
-	if ((a == player or d == player)
-	and (b == odd_player and c == odd_player)):
-		score += best_agent[1]*3
-	if ((a == odd_player and b == player)
-	and (c == odd_player and d == BLK)):
-		score += best_agent[2]
+# 	if ((a == player or d == player)
+# 	and (b == odd_player and c == odd_player)):
+# 		score += best_agent[1]*3
+# 	if ((a == odd_player and b == player)
+# 	and (c == odd_player and d == BLK)):
+# 		score += best_agent[2]
 
-	return score
+# 	return score
 
-def ef_curr(player,a,b,c,d):
-	odd_player = 0
-	if (player == 0):
-		odd_player = 1
-	score, blank, piece = 0, 0, 0
-	lst = [a,b,c,d]
-	for i in lst:
-		if (i == BLK):
-			blank += 1
-		if (i == player):
-			piece += 1
-	if (piece == 4 and blank == 0):
-		score += curr_agent[0]
-	elif (piece == 3 and blank == 1):
-		score += curr_agent[1]
-	elif (piece == 2 and blank == 2):
-		score += curr_agent[2]
+# def ef_curr(player,a,b,c,d):
+# 	odd_player = 0
+# 	if (player == 0):
+# 		odd_player = 1
+# 	score, blank, piece = 0, 0, 0
+# 	lst = [a,b,c,d]
+# 	for i in lst:
+# 		if (i == BLK):
+# 			blank += 1
+# 		if (i == player):
+# 			piece += 1
+# 	if (piece == 4 and blank == 0):
+# 		score += curr_agent[0]
+# 	elif (piece == 3 and blank == 1):
+# 		score += curr_agent[1]
+# 	elif (piece == 2 and blank == 2):
+# 		score += curr_agent[2]
 
-	blank, piece = 0, 0
-	for i in lst:
-		if (i == player):
-			blank += 1
-		if (i == odd_player):
-			piece += 1
-	if (piece == 3 and blank == 1):
-		score += curr_agent[3]
+# 	blank, piece = 0, 0
+# 	for i in lst:
+# 		if (i == player):
+# 			blank += 1
+# 		if (i == odd_player):
+# 			piece += 1
+# 	if (piece == 3 and blank == 1):
+# 		score += curr_agent[3]
 
-	if ((a == player or d == player)
-	and (b == odd_player and c == odd_player)):
-		score += best_agent[1]*3
-	if ((a == odd_player and b == player)
-	and (c == odd_player and d == BLK)):
-		score += best_agent[2]
+# 	if ((a == player or d == player)
+# 	and (b == odd_player and c == odd_player)):
+# 		score += best_agent[1]*3
+# 	if ((a == odd_player and b == player)
+# 	and (c == odd_player and d == BLK)):
+# 		score += best_agent[2]
 
-	# print(curr_agent)
-	return score
+# 	# print(curr_agent)
+# 	return score
 
-def deep_learning():
-	global best_agent
-	global curr_agent
-	for i1 in range(24,34,3):
-		for i2 in range(2,15,2):
-			# for i3 in range(1,3,1):
+# def deep_learning():
+# 	global best_agent
+# 	global curr_agent
+# 	for i1 in range(24,34,3):
+# 		for i2 in range(2,15,2):
+# 			# for i3 in range(1,3,1):
 	
-			curr_agent = [10000,i1,i2,5000]
-			res1, res2 = [], []
-			for game in range(5): ## best vs current
-				res1.append(AI_vs_AI(False,ef_best,4,ef_curr,4))
-			for game in range(5): ## current vs best
-				res2.append(AI_vs_AI(False,ef_curr,4,ef_best,4))
-			r_curr = count(res1,1)+count(res2,0)
-			r_best = count(res1,0)+count(res2,1)
-			print(best_agent,"vs",curr_agent,":",r_best,"-",r_curr)
-			if r_curr > r_best:
-				print(best_agent, "-->", curr_agent)
-				best_agent = curr_agent
+# 			curr_agent = [10000,i1,i2,5000]
+# 			res1, res2 = [], []
+# 			for game in range(5): ## best vs current
+# 				res1.append(AI_vs_AI(False,ef_best,4,ef_curr,4))
+# 			for game in range(5): ## current vs best
+# 				res2.append(AI_vs_AI(False,ef_curr,4,ef_best,4))
+# 			r_curr = count(res1,1)+count(res2,0)
+# 			r_best = count(res1,0)+count(res2,1)
+# 			print(best_agent,"vs",curr_agent,":",r_best,"-",r_curr)
+# 			if r_curr > r_best:
+# 				print(best_agent, "-->", curr_agent)
+# 				best_agent = curr_agent
 	
-	print(best_agent)
+# 	print(best_agent)
 
 
-def test():
-	global best_agent
-	global curr_agent
-	curr_agent = [1,1,1,1,1]
-	res1, res2 = [], []
-	for game in range(5): ## best vs current
-		res1.append(AI_vs_AI(False,ef_best,4,ef_curr,4))
-	for game in range(5): ## current vs best
-		res2.append(AI_vs_AI(False,ef_curr,4,ef_best,4))
-	if count(res1,1)+count(res2,0) > count(res1,0)+count(res2,1):
-		best_agent = curr_agent
-	print(res1, res2)
-	print(best_agent)
+# def test():
+# 	global best_agent
+# 	global curr_agent
+# 	curr_agent = [1,1,1,1,1]
+# 	res1, res2 = [], []
+# 	for game in range(5): ## best vs current
+# 		res1.append(AI_vs_AI(False,ef_best,4,ef_curr,4))
+# 	for game in range(5): ## current vs best
+# 		res2.append(AI_vs_AI(False,ef_curr,4,ef_best,4))
+# 	if count(res1,1)+count(res2,0) > count(res1,0)+count(res2,1):
+# 		best_agent = curr_agent
+# 	print(res1, res2)
+# 	print(best_agent)
 
-deep_learning()
+# deep_learning()
 # test()
 # AI_vs_AI(True,idm3,4,idm5,4)
