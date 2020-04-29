@@ -111,7 +111,7 @@ def AI_Mode(mode=2, depth=3):
 def AI_vs_AI(mode,eval_func1,depth1,eval_func2,depth2):
 	t, NB_PLAYED = 0, 0
 	arena = init_arena(TX, TY)
-	print_arena(arena)
+	# print_arena(arena)
 	while (NB_PLAYED < TX*TY):
 		if (t == 0):
 			if mode:
@@ -120,16 +120,18 @@ def AI_vs_AI(mode,eval_func1,depth1,eval_func2,depth2):
 				y = minimax(arena,t,t,NB_PLAYED,depth1,(0,0),eval_func1,NEG_INF,INF)[1]
 		else:
 			y = minimax(arena,t,t,NB_PLAYED,depth2,(0,0),eval_func2,NEG_INF,INF)[1]
-		fclear()
+		# fclear()
 
 		coord = turn(arena, y, t)		
-		print_arena(arena)
+		# print_arena(arena)
 		if (is_winning_pos(arena, coord[0], coord[1])):
-			print("\nFelicitation!! [ PLAYER", t+1, PLAYER_COLORED[t], "] WON!!\n")
+			# print("\nFelicitation!! [ PLAYER", t+1, PLAYER_COLORED[t], "] WON!!\n")
+			return t
 			break
 		t ,NB_PLAYED = 1 - t, NB_PLAYED + 1
 		if (NB_PLAYED == TX*TY):
-			print(TIE)
+			# print(TIE)
+			return -1
 			break
 ##
 ####################################################
